@@ -2,8 +2,10 @@ import JWTDecode from "jwt-decode";
 import cookieparser from "cookieparser";
 
 export const state= ()=>({
+    serverUrl: 'https://ecommerce-server-kappa.vercel.app/api',
     name:null,
-    email:null
+    email:null,
+    productList: []
 })
 
 export const actions={
@@ -24,7 +26,17 @@ export const actions={
                 email:decoded.email,
               });
         }
-    }
+    },
+    getProductAll({ state, commit }, {page, limit}) {
+        return this.$axios.$get(`${state.serverUrl}/product/list?page=${page}&limit=${limit}`)
+            .then(res => {
+                commit('SET_ALL_PRODUCT', res)
+                console.log(res)
+            })
+            .catch((err) => {
+                console.error(err)
+            })
+    },
 }
 
 export const mutations ={
@@ -35,5 +47,8 @@ export const mutations ={
     deleteUser(state){
         state.name= null;
         state.email= null;
+    },
+    SET_ALL_PRODUCT( state, payload) {
+        state.productList = payload
     }
 }

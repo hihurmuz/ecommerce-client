@@ -1,6 +1,6 @@
 <template>
   <div class="sliderContainer">
-      <div class="sliderContent">
+      <div class="sliderContent mb-4">
         <b-carousel
         id="carousel-1"
         v-model="slide"
@@ -25,10 +25,6 @@
         
         </b-carousel>
 
-        <p class="mt-4">
-        Slide #: {{ slide }}<br>
-        Sliding: {{ sliding }}
-        </p>
     </div>
   </div>
 </template>

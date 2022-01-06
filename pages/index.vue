@@ -2,21 +2,33 @@
   <div class="mainContainer">
     <TheSlider/>
     <div class="centerArea">
-      <CategoriesAccordionMenu class="accordionMenu"/>
       <div class="productsList">
-        <div v-for="i in 12" :key="i" class="productArea">Product</div>
+        <b-card-group v-if="productList" class="m-5" columns deck>
+          <product-card v-for="(el, i) in productList" :key="i" :item="el"/>
+        </b-card-group>
+        
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import ProductCard from '../components/ProductCard.vue'
 import TheSlider from "../components/TheSlider"
-import CategoriesAccordionMenu from "../components/CategoriesAccordionMenu"
 export default {
   components:{
     TheSlider,
-    CategoriesAccordionMenu
+    ProductCard,
+  },
+  data() {
+    return {
+      productList: []
+    }
+  },
+  created() {
+    this.$store.dispatch('getProductAll', {page: 0, limit: 10}).then(() =>{
+      this.productList = this.$store.state.productList.result
+    })
   }
 }
 </script>
@@ -45,15 +57,8 @@ export default {
   flex-wrap: wrap;
   justify-content: space-between;
   width: 80%;
-  background-color: turquoise;
   padding-left: 20px;
   padding-right: 20px;
 
-}
-.productArea{
-  background-color: tomato;
-  height: 300px;
-  width: 300px;
-  margin-bottom: 20px;
 }
 </style>
