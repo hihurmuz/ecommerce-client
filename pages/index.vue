@@ -5,8 +5,7 @@
       <div class="productsList">
         <b-card-group v-if="productList" class="m-5" columns deck>
           <product-card v-for="(el, i) in productList" :key="i" :item="el"/>
-        </b-card-group>
-        
+        </b-card-group>        
       </div>
     </div>
   </div>
@@ -43,7 +42,7 @@ export default {
 .centerArea{
   display: flex;
   flex-direction: row;
-  width: 80%;
+  justify-content: center;
 }
 .accordionMenu{
   width: 20%;

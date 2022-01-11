@@ -2,14 +2,13 @@
   <div class="mainContainer">
     
     <div class="centerArea">
-      <CategoriesAccordionMenu class="accordionMenu"/>
       <div class="productContent">
           <div class="topArea">
               <div class="imgArea">
-                <img :src="imgSrc[imgIndex]" class="fullSizeImage"/> 
+                <img :src="item.photo[imgIndex]" class="fullSizeImage"/> 
                 <div class="smallSizeImagesArea">
                     <img 
-                     v-for="(link,index) in imgSrc" 
+                     v-for="(link,index) in item.photo" 
                      :key="index" 
                      :src="link" 
                      class="smallSizeImages"
@@ -18,21 +17,27 @@
                 </div>               
               </div>
               <div class="infoArea">
-                  <h4>Product title Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h4>
-                  <span>ID: 123456789</span>
-                  <h5>$ 99.99</h5>
+                  <h4>{{item.title}}</h4>
+                  <span>ID:{{item._id}}</span>
+                  <h5>$ {{item.price}}</h5>
+                  <div>{{item.summary}}</div>
                   <b-form-spinbutton id="demo-sb" v-model="value" min="1" max="100"></b-form-spinbutton>
-                  <span>Stock : 80</span>
+                  <span>Stock : {{item.stockNumber}}</span>
                   <div>
                       <b-button variant="danger">Buy now</b-button>
                       <b-button variant="warning">Add to cart</b-button>
                   </div>
+                  <b-form-rating v-model="item.rating"></b-form-rating>
               </div> 
           </div>
           <div class="productDescription">
             <b-tabs content-class="mt-3">
-                <b-tab title="Description" active><p>I'm the first tab</p></b-tab>
-                <b-tab title="Features"><p>I'm the second tab</p></b-tab>
+                <b-tab v-if="item.description" title="Description" active>
+                    <p v-for="(el, i) in item.description" :key="i">{{el}}</p>
+                </b-tab>
+                <b-tab v-if="item.features" title="Features" active>
+                    <p v-for="(el, i) in item.features" :key="i">{{el}}</p>
+                </b-tab>
             </b-tabs>
           </div>
       </div>
@@ -41,6 +46,8 @@
 </template>
 
 <script>
+import{ mapActions, mapState } from 'vuex';
+
 import CategoriesAccordionMenu from "../../components/CategoriesAccordionMenu"
 export default {
   components:{    
@@ -48,6 +55,10 @@ export default {
   },
   data() {
       return {
+          item: {
+              photo: [],
+              description: []
+          },
           imgSrc:[
               "https://static.wixstatic.com/media/04839a_b4d0c16c316d49b68c12dee6f0920ce4.jpg",
               "https://octopus-electronics.com/uploads/products/1553687764Screenshot_2019-03-16_UPDATE_PRODUCT.png",
@@ -57,14 +68,25 @@ export default {
               "https://octopus-electronics.com/uploads/products/1553687764Screenshot_2019-03-16_UPDATE_PRODUCT.png",
           ],
           imgIndex:0,
-          value:7,
+          value:1,
       }
   },
+  created(){
+      this.getProduct({id: this.$route.params.id}).then(()=>{
+          this.item = this.product
+      })
+  },
   methods: {
+       ...mapActions([
+            'getProduct',
+        ]),
       changeFullImage(index){
           this.imgIndex = index
       }
   },
+  computed: {
+      ...mapState(['product'])
+  }
 }
 </script>
 

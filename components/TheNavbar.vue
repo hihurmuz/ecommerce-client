@@ -3,7 +3,7 @@
     <b-navbar toggleable="sm" type="light" variant="light">
         <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
 
-        <b-navbar-brand>Udemy Shop</b-navbar-brand>
+        <b-navbar-brand href="/">Udemy Shop</b-navbar-brand>
 
         <b-nav-form>
           <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>

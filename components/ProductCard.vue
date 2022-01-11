@@ -1,11 +1,12 @@
 <template>
   <b-card
         tag="div"
-        class="product-card-container container"
+        :img-src="item.photo[0]"
         @click="goProductDetail"
+        class="m-2"
+        style="min-width: 20rem;max-width: 30rem;cursor: pointer;"
     >
         <b-card-title class=title>{{item.title}}</b-card-title>
-        <b-img :src="item.photo[0]" :alt="item.description[0]"  height="200" />
             
         <b-row>            
             <b-col cols="8">
@@ -52,16 +53,6 @@ export default {
 </script>
 
 <style scoped>
-.product-card-container {
-    margin: 10px;
-    min-width: 20rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-content: space-around;
-    height: inherit;
-    
-}
 .title {
     display: -webkit-box;
     overflow: hidden;
