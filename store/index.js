@@ -1,5 +1,6 @@
 import JWTDecode from "jwt-decode";
 import cookieparser from "cookieparser";
+import Cookie from "js-cookie";
 
 export const state= ()=>({
     serverUrl: 'https://ecommerce-server-kappa.vercel.app/api',
@@ -22,14 +23,14 @@ export const actions={
         const decoded = JWTDecode(parsedToken)
         
         if(decoded){
-            commit("setUser",{
+            commit("SET_USER",{
                 name:decoded.name,
                 email:decoded.email,
               });
         }
     },
-    getProductAll({ state, commit }, {page, limit}) {
-        return this.$axios.$get(`${state.serverUrl}/product/list?page=${page}&limit=${limit}`)
+    getProductAll({ state, commit }, {page, limit, product}) {
+        return this.$axios.$get(`${state.serverUrl}/product/list?page=${page}&limit=${limit}`, {product})
             .then(res => {
                 commit('SET_ALL_PRODUCT', res)
             })
@@ -46,14 +47,35 @@ export const actions={
                 console.error(err)
             })
     },
+    
+    async userRegister({ state, commit },payload) {
+        let result = await this.$axios.$post(`${state.serverUrl}/authentication/signup`,payload)
+        
+        if(result.success){
+            Cookie.set("access_token",result.token);
+            commit("SET_USER",{
+                name:this.name,
+                email:this.email,
+            });
+        }
+    },
+    
+    async userLogin({ state, commit },payload) {
+        let result = await this.$axios.$post(`${state.serverUrl}/authentication/signin`,payload)
+        Cookie.set("access_token",result.token)
+        commit("SET_USER",{
+            name:result.user.name,
+            email:result.user.email,
+        });
+    }
 }
 
 export const mutations ={
-    setUser(state,user){
+    SET_USER(state,user){
         state.name= user.name;
         state.email= user.email;
     },
-    deleteUser(state){
+    REMOVE_USER(state){
         state.name= null;
         state.email= null;
     },

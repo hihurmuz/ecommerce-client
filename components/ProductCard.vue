@@ -1,11 +1,16 @@
 <template>
-  <b-card
-        tag="div"
-        :img-src="item.photo[0]"
+    <b-card
+        tag="div"        
         @click="goProductDetail"
         class="m-2"
-        style="min-width: 20rem;max-width: 30rem;cursor: pointer;"
+        style="min-width: 20rem;max-width: 20rem;cursor: pointer;"
     >
+        <b-row>
+            <b-col >
+                <b-card-img style="max-height: 10rem;object-fit: contain;" :src="item.photo[0]" alt="Image" class="rounded-0" />
+            </b-col>
+        </b-row>
+        
         <b-card-title class=title>{{item.title}}</b-card-title>
             
         <b-row>            
@@ -30,8 +35,8 @@
 export default {
     props: {
         item: {
-          type: Object,
-          default: () => {
+            type: Object,
+            default: () => {
                 return { 
                     title: '',
                     price: '',
@@ -46,7 +51,6 @@ export default {
     methods: {
         goProductDetail() {
             this.$router.push(`products/${this.item._id}`)
-            console.log(this.item._id)
         }
     }
 }
